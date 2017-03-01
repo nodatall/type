@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Increase your bandwidth</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function addCharacter(character, position) {
+        let charElement
+
+        charElement = document.createElement('pre')
+        charElement.style.display = 'inline'
+
+        if ( character === ' ' ) {
+          character = '·'
+          charElement.style.opacity = .2
+        } else if ( character === '\n' ) {
+          character = '¬'
+          charElement.style.opacity = .3
+        }
+
+        const charText = document.createTextNode(character)
+        charElement.appendChild(charText)
+
+        charElement.id = position
+        document.body.appendChild(charElement)
+
+        if ( character === '¬') {
+          document.body.appendChild(document.createElement('br'))
+        }
+        return charElement
+      }
+
+      const text = `var after = require('after');
+var should = require('should');
+var express = require('../')
+  , Route = express.Route
+  , methods = require('methods')
+  , assert = require('assert');`
+
+      const charElements = text.split('').map(addCharacter)
+
+      let position = 0
+
+      window.addEventListener('keydown', e => {
+        if (e.key.length !== 1 && e.key !== 'Enter') return
+        e.preventDefault()
+
+        charElements[position].style.color =
+          e.key === text.charAt(position)
+            ? '#0F0'
+            : '#F00'
+
+        if ( e.key === 'Enter' && text.charAt(position) === '\n' ) {
+          charElements[position].style.color = '#0F0'
+        }
+
+        position++
+      })
+    </script>
+  </body>
+</html>
