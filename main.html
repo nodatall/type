@@ -24,10 +24,10 @@
         charElement.appendChild(charText)
 
         charElement.id = position
-        wordsDiv.appendChild(charElement)
+        textDiv.appendChild(charElement)
 
         if ( character === '¬') {
-          wordsDiv.appendChild(document.createElement('br'))
+          textDiv.appendChild(document.createElement('br'))
         }
         return charElement
       }
@@ -47,8 +47,8 @@
         alignItems: 'center'
       })
 
-      const wordsDiv = document.createElement('div')
-      document.body.appendChild(wordsDiv)
+      const textDiv = document.createElement('div')
+      document.body.appendChild(textDiv)
 
       const text = `var after = require('after');
 var should = require('should');
@@ -61,21 +61,28 @@ var express = require('../')
 
       let position = 0
 
+      let startTime, numberOfMistakes = 0
+
       window.addEventListener('keydown', e => {
         if (e.key.length !== 1 && e.key !== 'Enter') return
-
         if (e.key === ' ') e.preventDefault()
 
-        charElements[position].style.color =
-          e.key === text.charAt(position)
-            ? '#7B7'
-            : '#F00'
+        if (!startTime) startTime = performance.now()
 
-        if ( e.key === 'Enter' && text.charAt(position) === '\n' ) {
+        if ( e.key === 'Enter' && text.charAt(position) === '\n'
+          || e.key === text.charAt(position)) {
           charElements[position].style.color = '#7B7'
+        } else {
+          charElements[position].style.color = '#F00'
+          numberOfMistakes++
         }
 
         unhighlightPosition(position)
+        if (position === text.length - 1) {
+          const totalTime = performance.now() - startTime
+          alert(`${Math.round(text.length / totalTime * 1000)} characters per second\n${Math.round(100 * (text.length - numberOfMistakes) / text.length)}% accuracy`)
+          return
+        }
         position++
         highlightPosition(position)
       })
