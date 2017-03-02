@@ -14,23 +14,41 @@
 
         if ( character === ' ' ) {
           character = '·'
-          charElement.style.opacity = .2
+          charElement.style.color = '#DDD'
         } else if ( character === '\n' ) {
           character = '¬'
-          charElement.style.opacity = .3
+          charElement.style.color = '#DDD'
         }
 
         const charText = document.createTextNode(character)
         charElement.appendChild(charText)
 
         charElement.id = position
-        document.body.appendChild(charElement)
+        wordsDiv.appendChild(charElement)
 
         if ( character === '¬') {
-          document.body.appendChild(document.createElement('br'))
+          wordsDiv.appendChild(document.createElement('br'))
         }
         return charElement
       }
+
+      function unhighlightPosition(position) {
+        charElements[position].style.backgroundColor = null
+      }
+
+      function highlightPosition(position) {
+        charElements[position].style.backgroundColor = '#BBB'
+      }
+
+      Object.assign(document.body.style, {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+      })
+
+      const wordsDiv = document.createElement('div')
+      document.body.appendChild(wordsDiv)
 
       const text = `var after = require('after');
 var should = require('should');
@@ -45,18 +63,21 @@ var express = require('../')
 
       window.addEventListener('keydown', e => {
         if (e.key.length !== 1 && e.key !== 'Enter') return
-        e.preventDefault()
+
+        if (e.key === ' ') e.preventDefault()
 
         charElements[position].style.color =
           e.key === text.charAt(position)
-            ? '#0F0'
+            ? '#7B7'
             : '#F00'
 
         if ( e.key === 'Enter' && text.charAt(position) === '\n' ) {
-          charElements[position].style.color = '#0F0'
+          charElements[position].style.color = '#7B7'
         }
 
+        unhighlightPosition(position)
         position++
+        highlightPosition(position)
       })
     </script>
   </body>
