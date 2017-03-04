@@ -71,8 +71,11 @@ window.addEventListener('keydown', e => {
 
   unhighlightPosition(position)
   if (position === text.length - 1) {
-    const totalTime = performance.now() - startTime
-    alert(`${Math.round(text.length / totalTime * 1000)} characters per second\n${Math.round(100 * (text.length - numberOfMistakes) / text.length)}% accuracy`)
+    const totalTime = performance.now() - startTime,
+      CPS = Math.round(text.length / totalTime * 1000),
+      WPM = CPS * 60 / 5,
+      accuracy = Math.round(100 * (text.length - numberOfMistakes) / text.length)
+    alert(`${CPS} characters per second\n${WPM} words per minute\n${accuracy}% accuracy`)
     return
   }
   position++
