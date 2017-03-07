@@ -41,6 +41,11 @@ Object.assign(document.body.style, {
 
 const textDiv = document.createElement('div')
 document.body.appendChild(textDiv)
+document.body.style.backgroundColor = '#222'
+document.body.style.color = '#FFF'
+document.body.style.fontSize = '18px'
+document.body.style.lineHeight = '25px'
+document.body.style.letterSpacing = '1px'
 
 const text = `var after = require('after');
 var should = require('should');
@@ -65,7 +70,7 @@ window.addEventListener('keydown', e => {
     || e.key === text.charAt(position)) {
     charElements[position].style.color = '#7B7'
   } else {
-    charElements[position].style.color = '#F00'
+    charElements[position].style.color = '#D44'
     numberOfMistakes++
   }
 
