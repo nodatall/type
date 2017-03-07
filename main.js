@@ -1,7 +1,5 @@
 function addCharacter(character, position) {
-  let charElement
-
-  charElement = document.createElement('pre')
+  let charElement = document.createElement('pre')
   charElement.style.display = 'inline'
 
   if ( character === ' ' ) {
@@ -32,33 +30,14 @@ function highlightPosition(position) {
   charElements[position].style.backgroundColor = '#BBB'
 }
 
-Object.assign(document.body.style, {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center'
-})
-
 const textDiv = document.createElement('div')
 document.body.appendChild(textDiv)
-document.body.style.backgroundColor = '#222'
-document.body.style.color = '#FFF'
-document.body.style.fontSize = '18px'
-document.body.style.lineHeight = '25px'
-document.body.style.letterSpacing = '1px'
 
-const text = `var after = require('after');
-var should = require('should');
-var express = require('../')
-, Route = express.Route
-, methods = require('methods')
-, assert = require('assert');`
+const text = `var after = require('after');`
 
 const charElements = text.split('').map(addCharacter)
 
-let position = 0
-
-let startTime, numberOfMistakes = 0
+let startTime, numberOfMistakes = 0, position = 0
 
 window.addEventListener('keydown', e => {
   if (e.key.length !== 1 && e.key !== 'Enter') return
@@ -80,9 +59,20 @@ window.addEventListener('keydown', e => {
       CPS = Math.round(text.length / totalTime * 1000),
       WPM = CPS * 60 / 5,
       accuracy = Math.round(100 * (text.length - numberOfMistakes) / text.length)
-    alert(`${CPS} characters per second\n${WPM} words per minute\n${accuracy}% accuracy`)
+      createLeaderBoard(CPS, WPM, accuracy)
     return
   }
   position++
   highlightPosition(position)
 })
+
+function createLeaderBoard(CPS, WPM, accuracy) {
+  const leaderboard = document.createElement('div')
+  leaderboard.id = 'leaderBoard'
+  document.body.appendChild(leaderboard)
+  const statistics = document.createElement('div')
+  statistics.id = 'statistics'
+  statistics.innerText = `${CPS} characters per second\n${WPM} words per minute\n${accuracy}% accuracy`
+  leaderboard.appendChild(statistics)
+  css_scoreScreenStyles()
+}
