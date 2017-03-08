@@ -37,9 +37,10 @@ const text = `var after = require('after');`
 
 const charElements = text.split('').map(addCharacter)
 
-let startTime, numberOfMistakes = 0, position = 0
+let startTime, numberOfMistakes = 0, position = 0, finished = false
 
 window.addEventListener('keydown', e => {
+  if (finished) return
   if (e.key.length !== 1 && e.key !== 'Enter') return
   if (e.key === ' ') e.preventDefault()
 
@@ -55,6 +56,7 @@ window.addEventListener('keydown', e => {
 
   unhighlightPosition(position)
   if (position === text.length - 1) {
+    finished = true
     const totalTime = performance.now() - startTime,
       CPS = Math.round(text.length / totalTime * 1000),
       WPM = CPS * 60 / 5,
