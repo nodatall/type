@@ -14,12 +14,10 @@ setStyleByElement(document.body, {
 function css_scoreScreenStyles() {
 
   setStyleByClassName('leaderBoard', {
-    height: '300px',
-    width: '500px',
     border: '1px solid black',
     backgroundColor: '#FFF',
-    position: 'absolute',
-    top: '0'
+    padding: '10px',
+    margin: '10px'
   })
 
   setStyleByClassName('statistics', {
