@@ -1,4 +1,4 @@
-Object.assign(document.body.style, {
+setStyleByElement(document.body, {
   backgroundColor: '#222',
   color: '#FFF',
   fontSize: '18px',
@@ -12,7 +12,8 @@ Object.assign(document.body.style, {
 })
 
 function css_scoreScreenStyles() {
-  Object.assign(document.getElementById('leaderBoard').style, {
+
+  setStyleByClassName('leaderBoard', {
     height: '300px',
     width: '500px',
     border: '1px solid black',
@@ -21,7 +22,16 @@ function css_scoreScreenStyles() {
     top: '0'
   })
 
-  Object.assign(document.getElementById('statistics').style, {
+  setStyleByClassName('statistics', {
     color: '#000'
   })
+
+}
+
+function setStyleByElement (element, style) {
+  Object.assign(element.style, style)
+}
+
+function setStyleByClassName (elementClassName, style) {
+  setStyleByElement(document.getElementById(elementClassName), style)
 }
