@@ -1,6 +1,6 @@
 class PlayerDisplay {
-  constructor (playerName) {
-    this.playerName = playerName
+  constructor (playerNumber) {
+    this.playerNumber = playerNumber
     this.containerDiv = document.createElement('div')
     document.body.appendChild(this.containerDiv)
 
@@ -8,7 +8,7 @@ class PlayerDisplay {
     this.containerDiv.appendChild(this.textDiv)
 
     this.nameDiv = document.createElement('div')
-    this.nameDiv.appendChild(document.createTextNode(playerName))
+    this.nameDiv.appendChild(document.createTextNode('Player ' + playerNumber))
     this.containerDiv.appendChild(this.textDiv)
 
     this.text = `var after = require('after');`
@@ -53,6 +53,11 @@ class PlayerDisplay {
     this.charElements[position].style.backgroundColor = '#BBB'
   }
 
+  keyPress (data) {
+    const {position, correct} = data
+    this.charElements[position].style.color = correct? '#7B7' : '#D44'
+  }
+
   setAsActive () {
     window.addEventListener('keydown', e => {
       let correct
@@ -81,15 +86,16 @@ class PlayerDisplay {
         this.createLeaderBoard(Math.round(cps), Math.round(wpm), this.accuracy)
         return
       }
-      this.unhighlightPosition(this.position)
-      this.position++
-      this.highlightPosition(this.position)
 
       socket.emit('keyPress', {
         position: this.position,
         correct: correct,
-        playerName: this.playerName
+        playerNumber: this.playerNumber
       })
+
+      this.unhighlightPosition(this.position)
+      this.position++
+      this.highlightPosition(this.position)
     })
   }
 
@@ -105,9 +111,17 @@ class PlayerDisplay {
   }
 }
 
-playerDisplays =  Array(3).fill(null).map((e, index) => new PlayerDisplay('Player ' + index + 1))
+playerDisplays =  Array(3).fill(null).map((e, index) => new PlayerDisplay(index))
 
 socket.on('youArePlayerNumber', function (data) {
   console.log('i am player', data)
   playerDisplays[data - 1].setAsActive()
+})
+
+socket.on('otherPlayerKeyPress', function (data) {
+  console.log('otherKeyPress:', data)
+  playerDisplays[data.playerNumber].keyPress({
+    position: data.position,
+    correct: data.correct
+  })
 })

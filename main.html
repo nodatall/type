@@ -13,20 +13,12 @@
     <script type="text/javascript">
       const socket = io()
 
-      socket.on('newClientConnected', function (data) {
-        console.log('A new client with id', data, 'connected to the server')
-      })
-
-      socket.on('clientDisconnected', function (data) {
-        console.log('A new client with id', data, 'disconnected from the server')
-      })
-
-      socket.on('otherKeyPress', function (data) {
-        console.log('otherKeyPress:', data)
-      })
-
-      // socket.on('youArePlayerNumber', function (data) {
-      //   console.log('i am player', data)
+      // socket.on('newClientConnected', function (data) {
+      //   console.log('A new client with id', data, 'connected to the server')
+      // })
+      //
+      // socket.on('clientDisconnected', function (data) {
+      //   console.log('A new client with id', data, 'disconnected from the server')
       // })
     </script>
     <script type="text/javascript" src="main.js"></script>

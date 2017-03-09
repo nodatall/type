@@ -37,19 +37,18 @@ io.on('connection', function (client) {
     }
   }
 
-  io.emit('newClientConnected', client.id)
+  // io.emit('newClientConnected', client.id)
 
-  client.on('makeAnnouncement', function (data) {
-    io.emit('announcement', data)
-  })
+  // client.on('makeAnnouncement', function (data) {
+  //   io.emit('announcement', data)
+  // })
 
-  client.on('disconnect', function () {
-    io.emit('clientDisconnected', client.id)
-  })
+  // client.on('disconnect', function () {
+  //   io.emit('clientDisconnected', client.id)
+  // })
 
   client.on('keyPress', function(data) {
-    client.broadcast.emit('otherKeyPress', data)
-    console.log('key pressed elsewhere:', data)
+    client.broadcast.emit('otherPlayerKeyPress', data)
   })
 })
 
