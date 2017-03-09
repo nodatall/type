@@ -1,80 +1,91 @@
-function addCharacter(character, position) {
-  let charElement = document.createElement('pre')
-  charElement.style.display = 'inline'
-
-  if ( character === ' ' ) {
-    character = '·'
-    charElement.style.color = '#DDD'
-  } else if ( character === '\n' ) {
-    character = '¬'
-    charElement.style.color = '#DDD'
+class PlayerDisplay {
+  constructor () {
+    this.text = `var after = require('after');`
+    this.startTime = null
+    this.totalTime = null
+    this.numberOfMistakes = 0
+    this.position = 0
+    this.finished = false
+    this.textDiv = document.createElement('div')
+    this.charElements = this.text.split('').map(this.addCharacter.bind(this))
+    document.body.appendChild(this.textDiv)
   }
 
-  const charText = document.createTextNode(character)
-  charElement.appendChild(charText)
+  addCharacter (character, position) {
+    let charElement = document.createElement('pre')
+    charElement.style.display = 'inline'
 
-  charElement.id = position
-  textDiv.appendChild(charElement)
+    if ( character === ' ' ) {
+      character = '·'
+      charElement.style.color = '#DDD'
+    } else if ( character === '\n' ) {
+      character = '¬'
+      charElement.style.color = '#DDD'
+    }
 
-  if ( character === '¬') {
-    textDiv.appendChild(document.createElement('br'))
-  }
-  return charElement
-}
+    const charText = document.createTextNode(character)
+    charElement.appendChild(charText)
 
-function unhighlightPosition(position) {
-  charElements[position].style.backgroundColor = null
-}
+    charElement.id = position
+    this.textDiv.appendChild(charElement)
 
-function highlightPosition(position) {
-  charElements[position].style.backgroundColor = '#BBB'
-}
-
-const textDiv = document.createElement('div')
-document.body.appendChild(textDiv)
-
-const text = `var after = require('after');`
-
-const charElements = text.split('').map(addCharacter)
-
-let startTime, numberOfMistakes = 0, position = 0, finished = false
-
-window.addEventListener('keydown', e => {
-  if (finished) return
-  if (e.key.length !== 1 && e.key !== 'Enter') return
-  if (e.key === ' ') e.preventDefault()
-
-  if (!startTime) startTime = performance.now()
-
-  if ( e.key === 'Enter' && text.charAt(position) === '\n'
-    || e.key === text.charAt(position)) {
-    charElements[position].style.color = '#7B7'
-  } else {
-    charElements[position].style.color = '#D44'
-    numberOfMistakes++
+    if ( character === '¬') {
+      this.textDiv.appendChild(document.createElement('br'))
+    }
+    return charElement
   }
 
-  unhighlightPosition(position)
-  if (position === text.length - 1) {
-    finished = true
-    const totalTime = performance.now() - startTime,
-      CPS = Math.round(text.length / totalTime * 1000),
-      WPM = CPS * 60 / 5,
-      accuracy = Math.round(100 * (text.length - numberOfMistakes) / text.length)
-      createLeaderBoard(CPS, WPM, accuracy)
-    return
+  unhighlightPosition (position) {
+    this.charElements[position].style.backgroundColor = null
   }
-  position++
-  highlightPosition(position)
-})
 
-function createLeaderBoard(CPS, WPM, accuracy) {
-  const leaderboard = document.createElement('div')
-  leaderboard.id = 'leaderBoard'
-  document.body.appendChild(leaderboard)
-  const statistics = document.createElement('div')
-  statistics.id = 'statistics'
-  statistics.innerText = `${CPS} characters per second\n${WPM} words per minute\n${accuracy}% accuracy`
-  leaderboard.appendChild(statistics)
-  css_scoreScreenStyles()
+  highlightPosition (position) {
+    this.charElements[position].style.backgroundColor = '#BBB'
+  }
+
+  setAsActive () {
+    window.addEventListener('keydown', e => {
+      if (this.finished) return
+      if (e.key.length !== 1 && e.key !== 'Enter') return
+      if (e.key === ' ') e.preventDefault()
+
+      if (!this.startTime) this.startTime = performance.now()
+
+      if ( e.key === 'Enter' && this.text.charAt(this.position) === '\n'
+        || e.key === this.text.charAt(this.position)) {
+        this.charElements[this.position].style.color = '#7B7'
+      } else {
+        this.charElements[this.position].style.color = '#D44'
+        this.numberOfMistakes++
+      }
+
+      this.unhighlightPosition(this.position)
+      if (this.position === this.text.length - 1) {
+        this.finished = true
+        this.totalTime = performance.now() - this.startTime
+        const cps = this.text.length / this.totalTime * 1000
+        const wpm = cps * 60 / 5
+        this.accuracy = Math.round(100 * (this.text.length - this.numberOfMistakes) / this.text.length)
+        this.createLeaderBoard(Math.round(cps), Math.round(wpm), this.accuracy)
+        return
+      }
+      this.position++
+      this.highlightPosition(this.position)
+    })
+  }
+
+  createLeaderBoard(cps, wpm, accuracy) {
+    const leaderboard = document.createElement('div')
+    leaderboard.id = 'leaderBoard'
+    document.body.appendChild(leaderboard)
+    const statistics = document.createElement('div')
+    statistics.id = 'statistics'
+    statistics.innerText = `${cps} characters per second\n${wpm} words per minute\n${accuracy}% accuracy`
+    leaderboard.appendChild(statistics)
+    css_scoreScreenStyles()
+  }
 }
+
+const player1Display = new PlayerDisplay()
+
+player1Display.setAsActive()
