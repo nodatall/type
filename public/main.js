@@ -1,14 +1,17 @@
+const socket = io()
+
 class PlayerDisplay {
   constructor (playerNumber) {
     this.playerNumber = playerNumber
     this.containerDiv = document.createElement('div')
+    this.containerDiv.classList.add('playerDisplay')
     document.body.appendChild(this.containerDiv)
-
-    this.textDiv = document.createElement('div')
-    this.containerDiv.appendChild(this.textDiv)
 
     this.nameDiv = document.createElement('div')
     this.nameDiv.appendChild(document.createTextNode('Player ' + playerNumber))
+    this.containerDiv.appendChild(this.nameDiv)
+
+    this.textDiv = document.createElement('div')
     this.containerDiv.appendChild(this.textDiv)
 
     this.text = `var after = require('after');`
@@ -84,6 +87,12 @@ class PlayerDisplay {
         const wpm = cps * 60 / 5
         this.accuracy = Math.round(100 * (this.text.length - this.numberOfMistakes) / this.text.length)
         this.createLeaderBoard(Math.round(cps), Math.round(wpm), this.accuracy)
+        socket.emit('finished', {
+          cps: Math.round(cps),
+          wpm: Math.round(wpm),
+          accuracy: this.accuracy,
+          playerNumber: this.playerNumber
+        })
         return
       }
 
@@ -113,15 +122,18 @@ class PlayerDisplay {
 
 playerDisplays =  Array(3).fill(null).map((e, index) => new PlayerDisplay(index))
 
-socket.on('youArePlayerNumber', function (data) {
-  console.log('i am player', data)
-  playerDisplays[data - 1].setAsActive()
+socket.on('youArePlayerNumber', function (playerNumber) {
+  console.log('I am player', playerNumber)
+  playerDisplays[playerNumber].setAsActive()
 })
 
 socket.on('otherPlayerKeyPress', function (data) {
-  console.log('otherKeyPress:', data)
   playerDisplays[data.playerNumber].keyPress({
     position: data.position,
     correct: data.correct
   })
+})
+
+socket.on('otherPlayerFinished', function (data) {
+  playerDisplays[data.playerNumber].createLeaderBoard(data.cps, data.wpm, data.accuracy)
 })

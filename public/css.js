@@ -11,6 +11,11 @@ setStyleByElement(document.body, {
   height: '100vh'
 })
 
+setStyleByClassName('playerDisplay', {
+  borderRight: '1px solid white',
+  borderLeft: '1px solid white',
+})
+
 function css_scoreScreenStyles() {
 
   setStyleByClassName('leaderBoard', {
