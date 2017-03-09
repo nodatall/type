@@ -7,5 +7,32 @@
   <body>
     <script type="text/javascript" src="css.js"></script>
     <script type="text/javascript" src="main.js"></script>
+
+    <!-- The serverside part of socket.io automatically makes the file "/socket.io/socket.io.js" available to the clients -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script type="text/javascript">
+      const socket = io()
+
+      socket.on('welcome', function () {
+        console.log('A welcome message was recieved from the server')
+      })
+
+      socket.on('newClientConnected', function (data) {
+        console.log('A new client with id', data, 'connected to the server')
+      })
+
+      socket.on('clientDisconnected', function (data) {
+        console.log('A new client with id', data, 'disconnected from the server')
+      })
+
+      socket.on('announcement', function (data) {
+        console.log('Announcement:', data)
+      })
+
+      function makeAnnoucement(announcement) {
+        socket.emit('makeAnnouncement', announcement)
+      }
+    </script>
   </body>
 </html>
