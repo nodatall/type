@@ -3,6 +3,21 @@ var app = express()
 var server = require('http').createServer(app);
 var io = require('socket.io')(server)
 
+const players = [
+  {
+    playerOnline: false,
+    client: null
+  },
+  {
+    playerOnline: false,
+    client: null
+  },
+  {
+    playerOnline: false,
+    client: null
+  }
+]
+
 app.use(express.static('public'))
 
 app.get('/', function (request, response) {
@@ -12,7 +27,15 @@ app.get('/', function (request, response) {
 io.on('connection', function (client) {
   console.log('A client connected')
 
-  client.emit('welcome')
+  for (let playerNumber = 1; playerNumber <= 3; playerNumber++) {
+    if (!players[playerNumber - 1].playerOnline) {
+      players[playerNumber - 1].playerOnline = true
+      players[playerNumber - 1].client = client
+      client.emit('youArePlayerNumber', playerNumber)
+      console.log('assigned player', playerNumber)
+      break
+    }
+  }
 
   io.emit('newClientConnected', client.id)
 
@@ -22,6 +45,11 @@ io.on('connection', function (client) {
 
   client.on('disconnect', function () {
     io.emit('clientDisconnected', client.id)
+  })
+
+  client.on('keyPress', function(data) {
+    client.broadcast.emit('otherKeyPress', data)
+    console.log('key pressed elsewhere:', data)
   })
 })
 
