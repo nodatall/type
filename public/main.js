@@ -29,8 +29,8 @@ document.body.appendChild(this.containerDiv)`
 `socket.on('youArePlayerNumber', function (playerNumber) {
   console.log('I am player', playerNumber)
   playerDisplays[playerNumber].setAsActive()
-})`,
-
+})`
+,
     styles: [
       {
         color: '#FFE',
@@ -45,8 +45,8 @@ document.body.appendChild(this.containerDiv)`
 
 The exciting adventure is here!  You cannot escape it!
 
-Each moment has new textures and never before seen combinations of sound and color`,
-
+Each moment has new textures and never before seen combinations of sound and color`
+,
     styles: [
       {
         color: '#FFF',
@@ -93,7 +93,8 @@ if ( character === ' ' ) {
 } else if ( character === '\n' ) {
   character = '¬'
   charElement.style.color = '#DDD'
-}`,
+}`
+  ,
     styles: [
       {
         color: '#FF7',
@@ -107,7 +108,8 @@ if ( character === ' ' ) {
 ]
 },
 {
-text:`,
+text:`
+  ,
     styles: [
       {
         color: '#77F',
@@ -118,6 +120,8 @@ text:`,
 ]
 
 const socket = io()
+
+let selectedText = 2
 
 class PlayerDisplay {
   constructor (playerNumber) {
@@ -134,7 +138,10 @@ class PlayerDisplay {
     this.textDiv = document.createElement('div')
     this.containerDiv.appendChild(this.textDiv)
 
-    this.text = textSamples[0].text
+    this.text = textSamples[selectedText].text
+
+    this._newlinesInARow = 0
+    this._paragraph = 0
 
     this.charElements = this.text.split('').map(this.addCharacter.bind(this))
 
@@ -149,12 +156,24 @@ class PlayerDisplay {
     let charElement = document.createElement('pre')
     charElement.style.display = 'inline'
 
+    charElement.style.color = textSamples[selectedText].styles[this._paragraph].color
+
+    if ( character === '\n' ) {
+      this._newlinesInARow++
+    } else {
+      this._newlinesInARow = 0
+    }
+
+    if (this._newlinesInARow === 2) {
+      this._paragraph++
+    }
+
     if ( character === ' ' ) {
       character = '·'
-      charElement.style.color = '#DDD'
+      charElement.style.opacity = 0.5
     } else if ( character === '\n' ) {
       character = '¬'
-      charElement.style.color = '#DDD'
+      charElement.style.opacity = 0.5
     }
 
     const charText = document.createTextNode(character)
