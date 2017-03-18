@@ -1,3 +1,26 @@
+const textSamples = [
+`var express = require('express')
+var app = express()
+var server = require('http').createServer(app);
+var io = require('socket.io')(server)
+
+this.playerNumber = playerNumber
+this.containerDiv = document.createElement('div')
+this.containerDiv.classList.add('playerDisplay')
+document.body.appendChild(this.containerDiv)`,
+
+`socket.on('youArePlayerNumber', function (playerNumber) {
+  console.log('I am player', playerNumber)
+  playerDisplays[playerNumber].setAsActive()
+})`,
+
+`You are always in a brand new mind place reality.  It just keeps building on previous experience.
+
+The exciting adventure is here!  You cannot escape it!
+
+Each moment has new textures and never before seen combinations of sound and color`
+]
+
 const socket = io()
 
 class PlayerDisplay {
@@ -9,12 +32,14 @@ class PlayerDisplay {
 
     this.nameDiv = document.createElement('div')
     this.nameDiv.appendChild(document.createTextNode('Player ' + playerNumber))
+    this.nameDiv.classList.add('playerLabel')
     this.containerDiv.appendChild(this.nameDiv)
 
     this.textDiv = document.createElement('div')
     this.containerDiv.appendChild(this.textDiv)
 
-    this.text = `var after = require('after');`
+    this.text = textSamples[0]
+
     this.charElements = this.text.split('').map(this.addCharacter.bind(this))
 
     this.startTime = null
@@ -53,7 +78,7 @@ class PlayerDisplay {
   }
 
   highlightPosition (position) {
-    this.charElements[position].style.backgroundColor = '#BBB'
+    this.charElements[position].style.backgroundColor = '#553'
   }
 
   keyPress (data) {
@@ -62,6 +87,9 @@ class PlayerDisplay {
   }
 
   setAsActive () {
+    this.nameDiv.classList.add('activePlayerLabel')
+    this.highlightPosition(0)
+
     window.addEventListener('keydown', e => {
       let correct
       if (this.finished) return
