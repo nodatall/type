@@ -12,8 +12,8 @@ setStyleByElement(document.body, {
 })
 
 setStyleByClassName('playerDisplay', {
-  borderRight: '1px solid white',
-  borderLeft: '1px solid white',
+  borderRight: '1px solid #777',
+  borderLeft: '1px solid #777',
 })
 
 function css_scoreScreenStyles() {
