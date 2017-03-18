@@ -96,7 +96,21 @@ if ( character === ' ' ) {
 }`,
     styles: [
       {
-        color: '#FF7'
+        color: '#FF7',
+        length: 1000
+      }
+    ]
+  },
+  {
+    text:
+`  }
+]
+},
+{
+text:`,
+    styles: [
+      {
+        color: '#77F',
         length: 1000
       }
     ]
