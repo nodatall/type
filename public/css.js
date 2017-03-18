@@ -12,21 +12,21 @@ setStyleByElement(document.body, {
 })
 
 setStyleByClassName('playerDisplay', {
-  borderRight: '1px solid #777',
-  borderLeft: '1px solid #777',
+  borderRight: '1px solid #444',
+  borderLeft: '1px solid #444',
+  padding: '10px 10px',
 })
 
 function css_scoreScreenStyles() {
 
   setStyleByClassName('leaderBoard', {
-    border: '1px solid black',
-    backgroundColor: '#FFF',
+    border: '1px solid white',
     padding: '10px',
-    margin: '10px'
+    margin: '20px'
   })
 
   setStyleByClassName('statistics', {
-    color: '#000'
+    color: '#fff'
   })
 
 }

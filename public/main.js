@@ -134,7 +134,7 @@ class PlayerDisplay {
     this.textDiv = document.createElement('div')
     this.containerDiv.appendChild(this.textDiv)
 
-    this.text = textSamples[0].text
+    this.text = textSamples[3].text
 
     this.charElements = this.text.split('').map(this.addCharacter.bind(this))
 
