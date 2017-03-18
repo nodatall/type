@@ -21,6 +21,12 @@ The exciting adventure is here!  You cannot escape it!
 Each moment has new textures and never before seen combinations of sound and color`
 ]
 
+const style = [
+  ['#EEE', '#FFF'],
+  ['#FFE'],
+  ['#FFF', '#FFF', '#b0f0F0']
+]
+
 const socket = io()
 
 class PlayerDisplay {
