@@ -1,4 +1,7 @@
 const textSamples = [
+
+{
+  text:
 `var express = require('express')
 var app = express()
 var server = require('http').createServer(app);
@@ -9,22 +12,25 @@ this.containerDiv = document.createElement('div')
 this.containerDiv.classList.add('playerDisplay')
 document.body.appendChild(this.containerDiv)`,
 
+  colors: ['#EEE', '#FFF']
+},
+
+{
+  text:
 `socket.on('youArePlayerNumber', function (playerNumber) {
   console.log('I am player', playerNumber)
   playerDisplays[playerNumber].setAsActive()
 })`,
 
+  colors: ['#FFE']
+
 `You are always in a brand new mind place reality.  It just keeps building on previous experience.
 
 The exciting adventure is here!  You cannot escape it!
 
-Each moment has new textures and never before seen combinations of sound and color`
-]
+Each moment has new textures and never before seen combinations of sound and color`,
 
-const style = [
-  ['#EEE', '#FFF'],
-  ['#FFE'],
-  ['#FFF', '#FFF', '#b0f0F0']
+  colors: ['#FFF', '#FFF', '#b0f0F0']
 ]
 
 const socket = io()
@@ -44,7 +50,7 @@ class PlayerDisplay {
     this.textDiv = document.createElement('div')
     this.containerDiv.appendChild(this.textDiv)
 
-    this.text = textSamples[0]
+    this.text = textSamples[0].text
 
     this.charElements = this.text.split('').map(this.addCharacter.bind(this))
 
