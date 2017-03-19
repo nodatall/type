@@ -15,6 +15,14 @@ const players = [
   {
     playerOnline: false,
     client: null
+  },
+  {
+    playerOnline: false,
+    client: null
+  },
+  {
+    playerOnline: false,
+    client: null
   }
 ]
 
@@ -27,7 +35,7 @@ app.get('/', function (request, response) {
 io.on('connection', function (client) {
   console.log('A client connected')
 
-  for (let playerNumber = 0; playerNumber < 3; playerNumber++) {
+  for (let playerNumber = 0; playerNumber < 5; playerNumber++) {
     if (!players[playerNumber].playerOnline) {
       players[playerNumber].playerOnline = true
       players[playerNumber].client = client

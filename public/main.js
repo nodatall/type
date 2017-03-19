@@ -265,7 +265,7 @@ class PlayerDisplay {
   }
 }
 
-playerDisplays = Array(3).fill(null).map((e, index) => new PlayerDisplay(index))
+playerDisplays = Array(5).fill(null).map((e, index) => new PlayerDisplay(index))
 
 socket.on('youArePlayerNumber', function (playerNumber) {
   console.log('I am player', playerNumber)
