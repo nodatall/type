@@ -123,7 +123,7 @@ text:`
 
 const socket = io()
 
-let selectedText = 5
+let selectedText = prompt('level')
 
 class PlayerDisplay {
   constructor (playerNumber) {
