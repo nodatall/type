@@ -5,10 +5,15 @@ setStyleByElement(document.body, {
   lineHeight: '25px',
   letterSpacing: '1px',
   display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'relative'
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  position: 'relative',
+  height: '100vh'
+})
+
+setStyleByClassName('playerDisplay', {
+  borderRight: '1px solid white',
+  borderLeft: '1px solid white',
 })
 
 function css_scoreScreenStyles() {
@@ -31,5 +36,7 @@ function setStyleByElement (element, style) {
 }
 
 function setStyleByClassName (elementClassName, style) {
-  setStyleByElement(document.getElementById(elementClassName), style)
+  Array.from(document.getElementsByClassName(elementClassName)).forEach(
+    element => setStyleByElement(element, style)
+  )
 }
