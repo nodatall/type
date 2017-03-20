@@ -123,7 +123,12 @@ text:`
 
 const socket = io()
 
-let selectedText = prompt('level')
+let selectedLevel = prompt('level')
+
+let levelText
+
+// if (player zero)
+socket.emit('selectLevel', selectedLevel)
 
 class PlayerDisplay {
   constructor (playerNumber) {
@@ -140,7 +145,7 @@ class PlayerDisplay {
     this.textDiv = document.createElement('div')
     this.containerDiv.appendChild(this.textDiv)
 
-    this.text = textSamples[selectedText].text
+    this.text = levelText.text
 
     this._newlinesInARow = 0
     this._paragraph = 0
@@ -158,7 +163,7 @@ class PlayerDisplay {
     let charElement = document.createElement('pre')
     charElement.style.display = 'inline'
 
-    charElement.style.color = textSamples[selectedText].styles[this._paragraph].color
+    charElement.style.color = levelText.styles[this._paragraph].color
 
     if ( character === '\n' ) {
       this._newlinesInARow++
@@ -281,4 +286,10 @@ socket.on('otherPlayerKeyPress', function (data) {
 
 socket.on('otherPlayerFinished', function (data) {
   playerDisplays[data.playerNumber].createLeaderBoard(data.cps, data.wpm, data.accuracy)
+})
+
+socket.on('levelText', function (data) {
+  levelText = data
+  console.log('new level text received -->', levelText)
+  // render()
 })
