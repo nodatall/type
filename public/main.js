@@ -1,126 +1,3 @@
-const textSamples = [
-  {
-    text:
-`var express = require('express')
-var app = express()
-var server = require('http').createServer(app);
-var io = require('socket.io')(server)
-
-this.playerNumber = playerNumber
-this.containerDiv = document.createElement('div')
-this.containerDiv.classList.add('playerDisplay')
-document.body.appendChild(this.containerDiv)`
-  ,
-    styles: [
-      {
-        color: '#EEE',
-        length: 139
-      }
-    ,
-      {
-        color: '#FFF',
-        length: 99
-      }
-    ]
-  }
-,
-  {
-  text:
-`socket.on('youArePlayerNumber', function (playerNumber) {
-  console.log('I am player', playerNumber)
-  playerDisplays[playerNumber].setAsActive()
-})`
-,
-    styles: [
-      {
-        color: '#FFE',
-        length: 1000
-      }
-    ]
-  }
-,
-  {
-    text:
-`You are always in a brand new mind place reality.  It just keeps building on previous experience.
-
-The exciting adventure is here!  You cannot escape it!
-
-Each moment has new textures and never before seen combinations of sound and color`
-,
-    styles: [
-      {
-        color: '#FFF',
-        length: 98
-      }
-    ,
-      {
-        color: '#FFF',
-        length: 56
-      }
-    ,
-      {
-        color: '#b0f0F0',
-        length: 83
-      }
-    ]
-  }
-,
-  {
-    text:
-`
-this.finished = true
-this.totalTime = performance.now() - this.startTime
-const cps = this.text.length / this.totalTime * 1000
-const wpm = cps * 60 / 5
-this.accuracy = Math.round(100 * (this.text.length - this.numberOfMistakes) / this.text.length)`,
-
-  styles:
-    [
-      {
-        color: '#FFF',
-        length: 1000
-      }
-    ]
-  },
-  {
-    text:
-`let charElement = document.createElement('pre')
-charElement.style.display = 'inline'
-
-if ( character === ' ' ) {
-  character = '·'
-  charElement.style.color = '#DDD'
-} else if ( character === '\n' ) {
-  character = '¬'
-  charElement.style.color = '#DDD'
-}`
-  ,
-    styles: [
-      {
-        color: '#FF7'
-      },
-      {
-        color: '#FF7'
-      }
-    ]
-  },
-  {
-    text:
-`  }
-]
-},
-{
-text:`
-  ,
-    styles: [
-      {
-        color: '#77F',
-        length: 1000
-      }
-    ]
-  }
-]
-
 const socket = io()
 
 let selectedLevel = prompt('level')
@@ -145,18 +22,19 @@ class PlayerDisplay {
     this.textDiv = document.createElement('div')
     this.containerDiv.appendChild(this.textDiv)
 
-    this.text = levelText.text
-
     this._newlinesInARow = 0
     this._paragraph = 0
-
-    this.charElements = this.text.split('').map(this.addCharacter.bind(this))
 
     this.startTime = null
     this.totalTime = null
     this.numberOfMistakes = 0
     this.position = 0
     this.finished = false
+  }
+
+  renderLevelText (textObject) {
+    this.text = textObject.text
+    this.charElements = this.text.split('').map(this.addCharacter.bind(this))
   }
 
   addCharacter (character, position) {
@@ -210,7 +88,6 @@ class PlayerDisplay {
 
   setAsActive () {
     this.nameDiv.classList.add('activePlayerLabel')
-    this.highlightPosition(0)
 
     window.addEventListener('keydown', e => {
       let correct
@@ -291,5 +168,9 @@ socket.on('otherPlayerFinished', function (data) {
 socket.on('levelText', function (data) {
   levelText = data
   console.log('new level text received -->', levelText)
-  // render()
+
+  playerDisplays.forEach(playerDisplay => {
+    playerDisplay.renderLevelText(levelText)
+    playerDisplay.highlightPosition(0)
+  })
 })
